@@ -1,0 +1,246 @@
+//Anthony Clemente
+
+
+displayTables();
+
+
+var tables = ["game"];
+
+tables.forEach(setUpShowFormsButtons);
+
+
+
+		
+function setUpShowFormsButtons(t){	
+
+	document.getElementById("add" + t).addEventListener("click", function(event){
+		
+		event.preventDefault();
+		var allForms = document.getElementsByTagName("form");
+		for (var i = 0; i < allForms.length; i++){
+			allForms[i].style.display = "none";
+			
+		}
+		var currForm = document.getElementById(t + "_form");
+		currForm.style.display = "block";
+		
+	});
+}
+
+populateGameFilter();
+
+function populateGameFilter(){
+	
+	var getGameTypeRequest = new XMLHttpRequest();
+	getGameTypeRequest.open('GET', "http://flip1.engr.oregonstate.edu:12345/game_type", true);
+	getGameTypeRequest.addEventListener('load',function(){
+		if(getGameTypeRequest.status >= 200 && getGameTypeRequest.status < 400){
+			
+			var response = JSON.parse(getGameTypeRequest.responseText);
+			var typeDropdown = document.getElementById("sport_types");
+			
+			var typeArray = [];
+	
+			for(var i = 0; i < response.length; i++){
+				if(typeArray.indexOf(response[i]["sport_type"]) < 0){
+					typeArray.push(response[i]["sport_type"]);
+				}
+			}
+
+			for(var i = 0; i < typeArray.length; i++){
+				optionElem = document.createElement("option");
+				optionElem.value = typeArray[i];
+				optionElem.innerHTML = typeArray[i];
+
+				typeDropdown.append(optionElem);	
+			}
+			
+		} else {
+			console.log("Error in network request: " + getGameTypeRequest.statusText);
+		}});
+	getGameTypeRequest.send(null);	
+	
+}
+
+
+//Set up filtering
+document.getElementById("filterGames").addEventListener("click", function(event){
+	
+	event.preventDefault();
+	if(document.getElementById("sport_types").value != 1){
+		
+		var typeSelect = document.getElementById("sport_types");
+		var type = typeSelect.options[typeSelect.selectedIndex].value;
+		
+		var gameByType = new XMLHttpRequest();
+		
+		gameByType.open('GET', "http://flip1.engr.oregonstate.edu:12345/games_by_type?type=" + type, true);
+		gameByType.addEventListener('load',function(){
+		  if(gameByType.status >= 200 && gameByType.status < 400){
+			
+			var response = JSON.parse(gameByType.responseText);
+			
+			var table = document.createElement("table");
+			var thead = document.createElement("thead");
+			var tr = document.createElement("tr");
+
+			for(var prop in response[0]){
+				var th = document.createElement("th");
+				th.style.border = "1px solid black";
+				th.textContent = prop;
+				tr.appendChild(th);
+			}
+			
+			thead.appendChild(tr);
+			var tbody = document.createElement("tbody");
+			for(var i = 0; i < response.length; i++){
+				var tr = document.createElement("tr"); 
+				for(var prop in response[i]){
+					var td = document.createElement("td");
+					td.style.border = "1px solid black";
+					td.textContent = response[i][prop];
+					tr.appendChild(td);
+				}
+				tbody.appendChild(tr);
+			}
+			table.appendChild(thead);
+			table.appendChild(tbody);
+
+			table.style.border = "1px solid black";
+
+			document.body.insertBefore(table, document.getElementById("gametable"));
+			document.getElementById("gametable").remove();
+			table.id = "gametable";
+			
+			
+		  } else {
+			console.log("Error in network request: " + gameByType.statusText);
+		  }});
+		gameByType.send(null);
+	}
+	else{
+		location = location;
+	}
+	
+});
+
+
+document.getElementById("insertgame").addEventListener("click", function(event){
+	
+		event.preventDefault();
+		var sport = document.getElementById("sport_type").value;
+		var start_time = document.getElementById("start_time").value;
+		var game_location = document.getElementById("game_location").value;
+		
+		var getRequest = new XMLHttpRequest();
+		
+		getRequest.open('GET', "http://flip1.engr.oregonstate.edu:12345/game_insert?sport=" + sport + "&time=" + start_time + "&location=" + game_location, true);
+		getRequest.addEventListener('load',function(){
+		  if(getRequest.status >= 200 && getRequest.status < 400){
+			
+			location = location;
+			
+		  } else {
+			console.log("Error in network request: " + getRequest.statusText);
+		  }});
+		getRequest.send(null);
+});
+
+
+
+function displayTables(){
+	
+	var gameRequest = new XMLHttpRequest();
+	gameRequest.open('GET', "http://flip1.engr.oregonstate.edu:12345/games", true);
+	gameRequest.addEventListener('load',function(){
+	  if(gameRequest.status >= 200 && gameRequest.status < 400){
+		var response = JSON.parse(gameRequest.responseText);
+		
+		var currentTable = document.getElementsByTagName("table")[0];
+		
+		if(currentTable){
+			console.log(currentTable);
+			var currentTableParent = currentTable.parentNode;
+			currentTableParent.removeChild(currentTable);
+		}
+
+		makeTable(response, "game");
+		
+	  } else {
+		console.log("Error in network request: " + gameRequest.statusText);
+	  }});
+	gameRequest.send(null);
+	
+	
+
+}
+
+
+function makeTable(response, tableName){
+	
+	var br = document.createElement("br");
+	var label = document.createElement("label");
+	
+
+	label.innerHTML = tableName.charAt(0).toUpperCase() + tableName.slice(1) + ":";
+	
+	document.body.appendChild(br);
+	document.body.appendChild(label);
+	
+	// Create a table element, a thead element and a tr element
+	// for the first row (the header row)
+	var table = document.createElement("table");
+	table.id = tableName + "table";
+	
+	var thead = document.createElement("thead");
+	var tr = document.createElement("tr");
+
+	// Set up a loop to run, creating a th element
+	// with proper styling and text and append this to the first row
+	for(var prop in response[0]){
+		var th = document.createElement("th");
+		th.style.border = "1px solid black";
+		th.textContent = prop;
+		tr.appendChild(th);
+	}
+
+	// Add the completed header row to the thead element
+	thead.appendChild(tr);
+
+	// Create a tbody element for the rest of the cells
+	var tbody = document.createElement("tbody");
+
+	
+	for(var i = 0; i < response.length; i++){
+	   
+		// For each row create a new row element
+		var tr = document.createElement("tr");
+	   
+		for(var prop in response[i]){
+		   
+			// Create a td element with appropriate styling and
+			// text and append this to the current row
+			var td = document.createElement("td");
+			td.style.border = "1px solid black";
+			//console.log(response[i]["name"]);
+			td.textContent = response[i][prop];
+			tr.appendChild(td);
+			
+		}
+		
+		
+		// Add the new row to the body of the table before looping
+		// again (if required)
+		tbody.appendChild(tr);
+	}
+
+	//Add the completed head and body to the table
+	table.appendChild(thead);
+	table.appendChild(tbody);
+
+	// Style the entire table with a border
+	table.style.border = "1px solid black";
+
+	// Add this table to the page
+	document.body.appendChild(table);
+}

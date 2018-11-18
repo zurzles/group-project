@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Pick Up Plus</title>
+
+	</head>
+	<body>
+	
+	<button id = "addgame" type = "button">Add Game</button>
+		
+		<form method = "get" style="display:none;" id = "game_form">
+			<fieldset>
+				<legend>Add Game</legend>
+				<fieldset>
+					<label>Sport: <input type = "text" id = "sport_type"></label>
+				</fieldset>
+				<fieldset>
+					<label>Start Time: <input type = "datetime-local" id = "start_time"></label>
+				</fieldset>
+				<fieldset>
+					<label>Location: <input type = "text" id = "game_location"></label>
+				</fieldset>
+				<fieldset>
+					<input id = "insertgame" type = "submit" label = "Submit!">
+				</fieldset>
+			</fieldset>
+		</form>
+		
+		<br>
+		<label>Display games by sport:</label> <select id = "sport_types"><option value = "1">All Types</option></select>
+		<button id = "filterGames" type = "button">Filter</button>
+		
+		<script src = "PickUpPlus.js"></script>
+	</body>
+</html>
