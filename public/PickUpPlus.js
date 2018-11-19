@@ -1,5 +1,13 @@
 //Anthony Clemente
 
+var pageURL = window.location.href;
+
+var flipNumber = pageURL[pageURL.indexOf("flip") + 4];
+
+var shortURL = pageURL.substring(pageURL.indexOf(".edu") + 5);
+
+var portNumber = shortURL.substring(0, shortURL.indexOf("\/"));
+
 
 displayTables();
 
@@ -32,7 +40,7 @@ populateGameFilter();
 function populateGameFilter(){
 	
 	var getGameTypeRequest = new XMLHttpRequest();
-	getGameTypeRequest.open('GET', "http://flip1.engr.oregonstate.edu:12345/game_type", true);
+	getGameTypeRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/game_type", true);
 	getGameTypeRequest.addEventListener('load',function(){
 		if(getGameTypeRequest.status >= 200 && getGameTypeRequest.status < 400){
 			
@@ -74,7 +82,7 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 		
 		var gameByType = new XMLHttpRequest();
 		
-		gameByType.open('GET', "http://flip1.engr.oregonstate.edu:12345/games_by_type?type=" + type, true);
+		gameByType.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/games_by_type?type=" + type, true);
 		gameByType.addEventListener('load',function(){
 		  if(gameByType.status >= 200 && gameByType.status < 400){
 			
@@ -134,7 +142,7 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 		
 		var getRequest = new XMLHttpRequest();
 		
-		getRequest.open('GET', "http://flip1.engr.oregonstate.edu:12345/game_insert?sport=" + sport + "&time=" + start_time + "&location=" + game_location, true);
+		getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&time=" + start_time + "&location=" + game_location, true);
 		getRequest.addEventListener('load',function(){
 		  if(getRequest.status >= 200 && getRequest.status < 400){
 			
@@ -151,7 +159,7 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 function displayTables(){
 	
 	var gameRequest = new XMLHttpRequest();
-	gameRequest.open('GET', "http://flip1.engr.oregonstate.edu:12345/games", true);
+	gameRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/games", true);
 	gameRequest.addEventListener('load',function(){
 	  if(gameRequest.status >= 200 && gameRequest.status < 400){
 		var response = JSON.parse(gameRequest.responseText);
