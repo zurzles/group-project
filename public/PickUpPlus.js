@@ -35,6 +35,43 @@ function setUpShowFormsButtons(t){
 	});
 }
 
+
+populateUserDropdown();
+
+function populateUserDropdown(){
+
+        var getUserRequest = new XMLHttpRequest();
+        getUserRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/user_info", true);
+        getUserRequest.addEventListener('load',function(){
+                if(getUserRequest.status >= 200 && getUserRequest.status < 400){
+
+                        var response = JSON.parse(getUserRequest.responseText);
+                        var userDropdown = document.getElementById("host_user");
+
+                        var userArray = [];
+
+                        for(var i = 0; i < response.length; i++){
+                                if(userArray.indexOf(response[i]["user_id"]) < 0){
+                                        userArray.push(response[i]["user_id"]);
+                                }
+                        }
+
+                        for(var i = 0; i < userArray.length; i++){
+                                optionElem = document.createElement("option");
+                                optionElem.value = userArray[i];
+                                optionElem.innerHTML = userArray[i];
+
+                                userDropdown.append(optionElem);
+                        }
+
+                } else {
+                        console.log("Error in network request: " + getUserRequest.statusText);
+                }});
+        getUserRequest.send(null);
+
+}
+
+
 populateGameFilter();
 
 function populateGameFilter(){
@@ -137,12 +174,19 @@ document.getElementById("insertgame").addEventListener("click", function(event){
 	
 		event.preventDefault();
 		var sport = document.getElementById("sport_type").value;
+                var start_date = document.getElementById("start_date").value;
 		var start_time = document.getElementById("start_time").value;
-		var game_location = document.getElementById("game_location").value;
-		
+	        var playercap = document.getElementById("max_players").value;	
+                var game_location = document.getElementById("location_name").value;
+	        var street = document.getElementById("location_address").value;
+                var city = document.getElementById("location_city").value;
+                var stateabbr = document.getElementById("location_state").value;
+                var zipcode = document.getElementById("location_zip").value;
+                var host_user = document.getElementById("host_user").value;
+              	
 		var getRequest = new XMLHttpRequest();
 		
-		getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&time=" + start_time + "&location=" + game_location, true);
+		getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&date=" + start_date + "&time=" + start_time + "&location=" + game_location + street + city + stateabbr + zipcode, true);
 		getRequest.addEventListener('load',function(){
 		  if(getRequest.status >= 200 && getRequest.status < 400){
 			

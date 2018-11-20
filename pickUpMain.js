@@ -62,7 +62,7 @@ app.get('/game_insert',function(req,res,next){
 	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
 	res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
   
-	mysql.pool.query('INSERT INTO games (sport_type, start_time, location) VALUES (?,?,?)', [req.query.sport, req.query.time, req.query.location], function(err, rows, fields){
+	mysql.pool.query('INSERT INTO games (sport_type, start_date, start_time, host_user, max_players, location_name, location_address, location_city, location_state, location_zip) VALUES (?,?,?,?,?,?,?,?,?,?)', [req.query.sport, req.query.date, req.query.time, req.query.host_user, req.query.playercap, req.query.game_location, req.query.street, req.query.city, req.query.stateabbr, req.query.zipcode], function(err, rows, fields){
 		res.send(rows);
 	});
 });
@@ -96,6 +96,22 @@ app.get('/games_by_type',function(req,res,next){
 		}
 		res.send(rows)
 	});
+});
+
+
+app.get('/user_info',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+
+        var queryString = "SELECT user_id FROM users";
+        mysql.pool.query(queryString, function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+                res.send(rows)
+        });
 });
 
 app.use(function(req,res){

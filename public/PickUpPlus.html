@@ -16,9 +16,12 @@
 					<label>Sport: <input type = "text" id = "sport_type"></label>
 				</fieldset>
 				<fieldset>
-					<label>Start Date and Time: <input type = "datetime-local" id = "start_time"></label>
+					<label>Start Date: <input type = "date" id = "start_date"></label>
 				</fieldset>
-				<fieldset>
+                                <fieldset>
+                                        <label>Start Time: <input type = "time" id = "start_time"></label>
+                                </fieldset>				
+                                <fieldset>
 					<label>Location Name: <input type = "text" id = "location_name"></label>
 				</fieldset>
                                 <fieldset>
@@ -85,6 +88,10 @@
                                 </fieldset> 
                                 <fieldset>
                                         <label>Maximum number of players: <input type="number" id="max_players"></label>
+                                </fieldset>
+                                <fieldset>
+                                        <label>Host user: <select id="host_user"></label>
+                                        </select>
                                 </fieldset>
 				<fieldset>
 					<input id = "insertgame" type = "submit" label = "Submit!">
