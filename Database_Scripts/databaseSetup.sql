@@ -64,7 +64,7 @@ INSERT INTO gameUsers (game_id, user_id) VALUES (1, 1);
 # Remove user from game
 DELETE FROM gameUsers
 WHERE user_id = '1'
-AND game_id = '1'
+AND game_id = '1';
 
 # Show all users in game
 SELECT u.user_name AS Names
