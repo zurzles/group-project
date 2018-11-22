@@ -51,14 +51,14 @@ function populateUserDropdown(){
                         var userArray = [];
 
                         for(var i = 0; i < response.length; i++){
-                                if(userArray.indexOf(response[i]["user_id"]) < 0){
-                                        userArray.push(response[i]["user_id"]);
+                                if(userArray.indexOf(response[i]["user_name"]) < 0){
+                                        userArray.push(response[i]["user_name"]);
                                 }
                         }
 
                         for(var i = 0; i < userArray.length; i++){
                                 optionElem = document.createElement("option");
-                                optionElem.value = userArray[i];
+                                optionElem.value = response[i]["user_id"];
                                 optionElem.innerHTML = userArray[i];
 
                                 userDropdown.append(optionElem);
@@ -186,7 +186,9 @@ document.getElementById("insertgame").addEventListener("click", function(event){
               	
 		var getRequest = new XMLHttpRequest();
 		
-		getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&date=" + start_date + "&time=" + start_time + "&location=" + game_location + street + city + stateabbr + zipcode, true);
+		getRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/game_insert?sport=" + sport + "&date=" + start_date + 
+				"&time=" + start_time + "&host_user=" + host_user + "&playercap=" + playercap + "&game_location=" + game_location + 
+				"&street=" + street + "&city=" + city + "&stateabbr=" + stateabbr + "&zipcode=" + zipcode, true);
 		getRequest.addEventListener('load',function(){
 		  if(getRequest.status >= 200 && getRequest.status < 400){
 			

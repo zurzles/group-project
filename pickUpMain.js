@@ -45,12 +45,21 @@ app.get('/games',function(req,res,next){
 	res.header('Access-Control-Allow-Origin', '*');
 	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
 	res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
-  	
-	mysql.pool.query('SELECT * FROM games', function(err, rows, fields){
+  
+	//var queryString = 'SELECT * FROM games';
+	var queryString = "SELECT game_id AS `Game ID`, sport_type AS `Sport`, start_date AS `Start Date`, " +
+			"start_time AS `Start Time`, (SELECT user_name FROM users WHERE user_id = host_user) AS Host, " +
+			"max_players AS `Max Players`, current_players AS `Current Players`, location_name AS `Location Name`, " +
+			"location_address AS `Location Street Address`, location_city AS `City`, location_state AS `State`, " +
+			"location_zip AS `Zip Code`, location_lat AS `Latitude`, location_long AS `Longitude` FROM games";	
+	mysql.pool.query(queryString, function(err, rows, fields){
     		if(err){
       			next(err);
       			return;
     		}
+		for(var i = 0; i < rows.length; i++){
+			rows[i]["Start Date"] = rows[i]["Start Date"].toISOString().slice(0,10);
+		}
 		//context.results = JSON.stringify(rows);
 		res.send(rows);
 	});
@@ -63,6 +72,10 @@ app.get('/game_insert',function(req,res,next){
 	res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
   
 	mysql.pool.query('INSERT INTO games (sport_type, start_date, start_time, host_user, max_players, location_name, location_address, location_city, location_state, location_zip) VALUES (?,?,?,?,?,?,?,?,?,?)', [req.query.sport, req.query.date, req.query.time, req.query.host_user, req.query.playercap, req.query.game_location, req.query.street, req.query.city, req.query.stateabbr, req.query.zipcode], function(err, rows, fields){
+    		if(err){
+      			console.log(err);
+      			return;
+    		}
 		res.send(rows);
 	});
 });
@@ -74,7 +87,7 @@ app.get('/game_type',function(req,res,next){
 	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
 	res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
   
-	var queryString = "SELECT sport_type FROM games";
+	var queryString = "SELECT sport_type FROM games";	
 	mysql.pool.query(queryString, function(err, rows, fields){
 		if(err){
 			console.log(err);
@@ -89,10 +102,18 @@ app.get('/games_by_type',function(req,res,next){
 	res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
 	res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
   
-	var queryString  = 'SELECT * FROM games WHERE sport_type=?';
+	//var queryString  = 'SELECT * FROM games WHERE sport_type=?';
+	var queryString = "SELECT game_id AS `Game ID`, sport_type AS `Sport`, start_date AS `Start Date`, " +
+			"start_time AS `Start Time`, (SELECT user_name FROM users WHERE user_id = host_user) AS Host, " +
+			"max_players AS `Max Players`, current_players AS `Current Players`, location_name AS `Location Name`, " +
+			"location_address AS `Location Street Address`, location_city AS `City`, location_state AS `State`, " +
+			"location_zip AS `Zip Code`, location_lat AS `Latitude`, location_long AS `Longitude` FROM games WHERE sport_type = ?";	
 	mysql.pool.query(queryString, [req.query.type], function(err, rows, fields){
 		if(err){
 			console.log(err);
+		}	
+		for(var i = 0; i < rows.length; i++){
+			rows[i]["Start Date"] = rows[i]["Start Date"].toISOString().slice(0,10);
 		}
 		res.send(rows)
 	});
@@ -105,7 +126,8 @@ app.get('/user_info',function(req,res,next){
         res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
         res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
 
-        var queryString = "SELECT user_id FROM users";
+        //var queryString = "SELECT user_id FROM users";
+        var queryString = "SELECT user_id, user_name FROM users";
         mysql.pool.query(queryString, function(err, rows, fields){
                 if(err){
                         console.log(err);
