@@ -7,7 +7,23 @@
 	</head>
 	<body>
 	
-	<button id = "addgame" type = "button">Add Game</button>
+	<button id = "addgame" type = "button">Create a game!</button>
+	<button id = "searchgame" type = "button">Search for a game!</button>
+	
+		<form method = "get" style="display:none;" id = "search_form">
+			<fieldset>
+				<legend>Search for a game</legend>
+				<fieldset>
+					<label>Desired Sport: <select id = "sport_types"><option value = "1">All Types</option></select></label>
+				</fieldset>
+				<fieldset>
+					<label>Desired Location: <input type = "text" id = "location_search"></label>
+				</fieldset>
+				<fieldset>
+					<button id = "filterGames" type = "button">Search!</button>
+				</fieldset>
+			</fieldset>
+		</form>
 		
 		<form method = "get" style="display:none;" id = "game_form">
 			<fieldset>
@@ -100,8 +116,8 @@
 		</form>
 		
 		<br>
-		<label>Display games by sport:</label> <select id = "sport_types"><option value = "1">All Types</option></select>
-		<button id = "filterGames" type = "button">Filter</button>
+		<!--<label>Display games by sport:</label> <select id = "sport_types"><option value = "1">All Types</option></select>
+		<button id = "filterGames" type = "button">Filter</button><--!>
 		
 		<script src = "PickUpPlus.js"></script>
 	</body>

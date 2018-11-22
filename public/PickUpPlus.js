@@ -17,6 +17,18 @@ var tables = ["game"];
 tables.forEach(setUpShowFormsButtons);
 
 
+document.getElementById("searchgame").addEventListener("click", function(event){
+		
+	event.preventDefault();
+	var allForms = document.getElementsByTagName("form");
+	for (var i = 0; i < allForms.length; i++){
+		allForms[i].style.display = "none";
+		
+	}
+	var currForm = document.getElementById("search_form");
+	currForm.style.display = "block";
+		
+});
 
 		
 function setUpShowFormsButtons(t){	
@@ -83,7 +95,7 @@ function populateGameFilter(){
 			
 			var response = JSON.parse(getGameTypeRequest.responseText);
 			var typeDropdown = document.getElementById("sport_types");
-			
+			//var searchDropdown = document.getElementById("sport_search");	
 			var typeArray = [];
 	
 			for(var i = 0; i < response.length; i++){
@@ -97,7 +109,8 @@ function populateGameFilter(){
 				optionElem.value = typeArray[i];
 				optionElem.innerHTML = typeArray[i];
 
-				typeDropdown.append(optionElem);	
+				typeDropdown.append(optionElem);
+				//searchDropdown.append(optionElem);	
 			}
 			
 		} else {
