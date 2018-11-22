@@ -14,6 +14,15 @@ CREATE TABLE users (
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
+#Create sports table
+
+CREATE TABLE `sports` (
+  `sport_id` SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `sport_name` VARCHAR(50) NOT NULL,
+  PRIMARY KEY (`sport_id`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
 #Create games table
 
 CREATE TABLE games (
@@ -39,6 +48,11 @@ CREATE TABLE games (
 #Add a user
 
 INSERT INTO users (user_name, user_password) VALUES ('TestUser1', 'sports!');
+
+
+#Add sports
+
+INSERT INTO `sports` VALUES (1, 'Archery'), (2, 'Badminton'), (3, 'Baseball'), (4, 'Basketball'), (5, 'Bocce ball'), (6, 'Bowling'), (7, 'Boxing'), (8, 'Car racing'), (9, 'Climbing'), (10, 'Cricket'), (11, 'Croquet'), (12, 'Cycling'), (13, 'Dodgeball'), (14, 'Equestrian'), (15, 'Fencing'), (16, 'Field hockey'), (17, 'Fishing'), (18, 'Football - American football'), (19, 'Football - soccer'), (20, 'Golf'), (21, 'Gymnastics'), (22, 'Handball'), (23, 'Hunting'), (24, 'Ice hockey'), (25, 'Ice skating'), (26, 'Kickball'), (27, 'Lacrosse'), (28, 'Martial arts'), (29, 'Motocross'), (30, 'Pool'), (31, 'Quidditch'), (32, 'Racquetball'), (33, 'Roller skating'), (34, 'Rowing'), (35, 'Rugby'), (36, 'Running'), (37, 'Shooting'), (38, 'Skateboarding'), (39, 'Skiing'), (40, 'Snowboarding'), (41, 'Softball'), (42, 'Squash'), (43, 'Surfing'), (44, 'Swimming'), (45, 'Table tennis'), (46, 'Tennis'), (47, 'Track and field'), (48, 'Ultimate frisbee'), (49, 'Volleyball - indoor'), (50, 'Volleyball - outdoor'), (51, 'Water polo'), (52, 'Wrestling');
 
 
 #Add a game
