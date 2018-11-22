@@ -47,6 +47,41 @@ function setUpShowFormsButtons(t){
 	});
 }
 
+populateSportDropdown();
+
+function populateSportDropdown(){
+
+        var getSportRequest = new XMLHttpRequest();
+        getSportRequest.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber +"/sport_info", true);
+        getSportRequest.addEventListener('load',function(){
+                if(getSportRequest.status >= 200 && getSportRequest.status < 400){
+
+                        var response = JSON.parse(getSportRequest.responseText);
+                        var sportDropdown = document.getElementById("sport_type");
+
+                        var sportArray = [];
+
+                        for(var i = 0; i < response.length; i++){
+                                if(sportArray.indexOf(response[i]["sport_name"]) < 0){
+                                        sportArray.push(response[i]["sport_name"]);
+                                }
+                        }
+
+                        for(var i = 0; i < sportArray.length; i++){
+                                optionElem = document.createElement("option");
+                                optionElem.value = response[i]["sport_name"];
+                                optionElem.innerHTML = sportArray[i];
+
+                                sportDropdown.append(optionElem);
+                        }
+
+                } else {
+                        console.log("Error in network request: " + getSportRequest.statusText);
+                }});
+        getSportRequest.send(null);
+
+}
+
 
 populateUserDropdown();
 
