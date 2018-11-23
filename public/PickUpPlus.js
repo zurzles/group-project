@@ -194,6 +194,23 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 					td.textContent = response[i][prop];
 					tr.appendChild(td);
 				}
+
+								
+				var viewgameButton = document.createElement("button");
+				viewgameButton.textContent = "View Details";
+				var gameId = response[i]["Game ID"];
+
+				function setUpViewGameButton(gameId){
+					viewgameButton.addEventListener('click', function(event){
+
+						window.open("http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/GameView.html?id=" + gameId, "_self");
+   
+					});
+				};
+		
+				setUpViewGameButton(gameId);
+				tr.appendChild(viewgameButton);	
+
 				tbody.appendChild(tr);
 			}
 			table.appendChild(thead);
@@ -244,6 +261,23 @@ document.getElementById("filterGames").addEventListener("click", function(event)
                                         td.textContent = response[i][prop];
                                         tr.appendChild(td);
                                 }
+
+				
+				var viewgameButton = document.createElement("button");
+				viewgameButton.textContent = "View Details";
+				var gameId = response[i]["Game ID"];
+
+				function setUpViewGameButton(gameId){
+					viewgameButton.addEventListener('click', function(event){
+
+						window.open("http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/GameView.html?id=" + gameId, "_self");
+   
+					});
+				};
+		
+				setUpViewGameButton(gameId);
+				tr.appendChild(viewgameButton);	
+
                                 tbody.appendChild(tr);
                         }
                         table.appendChild(thead);
@@ -376,8 +410,21 @@ function makeTable(response, tableName){
 			tr.appendChild(td);
 			
 		}
+
+		var viewgameButton = document.createElement("button");
+		viewgameButton.textContent = "View Details";
+		var gameId = response[i]["Game ID"];
+
+		function setUpViewGameButton(gameId){
+			viewgameButton.addEventListener('click', function(event){
+
+				window.open("http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/GameView.html?id=" + gameId, "_self");
+   
+			});
+		};
 		
-		
+		setUpViewGameButton(gameId);
+		tr.appendChild(viewgameButton);	
 		// Add the new row to the body of the table before looping
 		// again (if required)
 		tbody.appendChild(tr);

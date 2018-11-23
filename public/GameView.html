@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Pick Up Plus</title>
+
+	</head>
+	<body>
+		<!--<label>Game ID: <input id="gameId" placeholder="Game ID"/></label>-->
+		<!--<label>Sport: </label>-->
+		<br>
+		<label id = "sport_type"></label>
+		<br>
+		<img id = "sport_image" src="images/placeholder.jpg">	
+       		<br> 
+		<input id = "start_date" type = "date" readonly>
+		<br>
+		<input type = "time" id = "start_time" readonly></label>
+		<br>
+		<label>Host User: </label> 
+		<label id ="host_user"></label>
+		<br>
+		<img src ="images/user.jpg">
+		<br>
+		<label id ="curr_players_label">Current players: </label>
+		<br>
+		<ul id = users_list></ul>
+		
+		<label id = "game_location">Where this game is: </label>
+		<br>
+		<img src="images/mapsEx.jpg">
+		
+		<script src = "GameView.js"></script>
+	</body>
+</html>

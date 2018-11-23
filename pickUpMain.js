@@ -144,6 +144,59 @@ app.get('/games_by_location',function(req,res,next){
 });        
 
 
+app.get('/game_by_id/:id',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+       
+        var queryString = "SELECT * FROM `games` WHERE game_id = ?";
+
+        mysql.pool.query(queryString, [req.params.id], function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+		//console.log(rows);
+                res.status(200).json(rows);
+        });
+}); 
+
+
+app.get('/user_by_id/:id',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+       
+        var queryString = "SELECT * FROM `users` WHERE user_id = ?";
+
+        mysql.pool.query(queryString, [req.params.id], function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+		//console.log(rows);
+                res.status(200).json(rows);
+        });
+});        
+
+       
+app.get('/users_in_game/:id',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+       
+        var queryString = "SELECT u.user_name AS Names FROM users u INNER JOIN gameUsers g ON g.user_id = u.user_id WHERE g.game_id = ?";
+
+        mysql.pool.query(queryString, [req.params.id], function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+		//console.log(rows);
+                res.status(200).json(rows);
+        });
+});        
+
 app.get('/sport_info',function(req,res,next){
         var context = {};
         res.header('Access-Control-Allow-Origin', '*');
