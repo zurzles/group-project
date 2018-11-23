@@ -211,9 +211,56 @@ document.getElementById("filterGames").addEventListener("click", function(event)
 		  }});
 		gameByType.send(null);
 	}
-	else{
-		location = location;
-	}
+	else {
+		//location = location;
+                var searchlocation = document.getElementById("location_search").value;
+                
+                var gameByLocation = new XMLHttpRequest();	
+                
+                gameByLocation.open('GET', "http://flip" + flipNumber + ".engr.oregonstate.edu:" + portNumber + "/games_by_location?searchlocation=" + searchlocation, true);
+                gameByLocation.addEventListener('load',function(){
+                  if(gameByLocation.status >= 200 && gameByLocation.status < 400){
+
+                        var response = JSON.parse(gameByLocation.responseText);
+                          
+                        var table = document.createElement("table");
+                        var thead = document.createElement("thead");
+                        var tr = document.createElement("tr");
+
+                        for(var prop in response[0]){
+                                var th = document.createElement("th");
+                                th.style.border = "1px solid black";
+                                th.textContent = prop;
+                                tr.appendChild(th);
+                        }	
+                        
+                        thead.appendChild(tr);
+                        var tbody = document.createElement("tbody");
+                        for(var i = 0; i < response.length; i++){
+                                var tr = document.createElement("tr");
+                                for(var prop in response[i]){
+                                        var td = document.createElement("td");
+                                        td.style.border = "1px solid black";
+                                        td.textContent = response[i][prop];
+                                        tr.appendChild(td);
+                                }
+                                tbody.appendChild(tr);
+                        }
+                        table.appendChild(thead);
+                        table.appendChild(tbody);
+
+                        table.style.border = "1px solid black";
+
+                        document.body.insertBefore(table, document.getElementById("gametable"));
+                        document.getElementById("gametable").remove();
+                        table.id = "gametable";
+
+
+                  } else {
+                        console.log("Error in network request: " + gameByLocation.statusText);
+                  }});
+                gameByLocation.send(null);
+        }
 	
 });
 

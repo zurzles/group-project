@@ -120,6 +120,30 @@ app.get('/games_by_type',function(req,res,next){
 });
 
 
+app.get('/games_by_location',function(req,res,next){
+        var context = {};
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE, OPTIONS');
+        res.header('Acess-Control-Allow-Headers', 'Content-Type, Authorization, Content-Length, X-Requested-With');
+       
+        var queryString = "SELECT game_id AS `Game ID`, sport_type AS `Sport`, start_date AS `Start Date`, " +
+                        "start_time AS `Start Time`, (SELECT user_name FROM users WHERE user_id = host_user) AS Host, " +
+                        "max_players AS `Max Players`, current_players AS `Current Players`, location_name AS `Location Name`, " +
+                        "location_address AS `Location Street Address`, location_city AS `City`, location_state AS `State`, " +
+                        "location_zip AS `Zip Code`, location_lat AS `Latitude`, location_long AS `Longitude` FROM games WHERE INSTR(location_name, ?) > 0";
+
+        mysql.pool.query(queryString, [req.query.searchlocation], function(err, rows, fields){
+                if(err){
+                        console.log(err);
+                }
+                for(var i = 0; i < rows.length; i++){
+                        rows[i]["Start Date"] = rows[i]["Start Date"].toISOString().slice(0,10);
+                }
+                res.send(rows)
+        });
+});        
+
+
 app.get('/sport_info',function(req,res,next){
         var context = {};
         res.header('Access-Control-Allow-Origin', '*');
