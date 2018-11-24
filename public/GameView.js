@@ -28,7 +28,7 @@ gameReq.addEventListener("load", function(data){
 
 	document.getElementById("host_user").innerHTML = gameItem.host_user;
 
-	document.getElementById("game_location").InnerHTML += gameItem.location_name;
+	document.getElementById("game_location").innerHTML = gameItem.location_name;
 
 	var userReq = new XMLHttpRequest();
 	userReq.addEventListener("load", function(data){
